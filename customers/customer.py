@@ -1,6 +1,6 @@
 from typeguard import typechecked
 import re
-from utils.customer_exception import *
+from exceptions.customer_exception import *
 
 @typechecked
 class Customer:
