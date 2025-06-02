@@ -45,13 +45,13 @@ class MySQLCustomerDAO(CustomerDAO):
         self._execute_query(insert_customer, (customer._dni, customer.name, customer.lastname, customer.phone, 
                                          customer.address, customer.active))
 
-    def update_customer(self, customer: Customer):
+    def update_customer(self, name: str, lastname: str, phone: str, address: str, dni: str):
         update_customers = """
-        UPDATE customer SET nombre = %s, apellido = %s, telefono = %s, direccion = %s, activo = %s
+        UPDATE customer SET nombre = %s, apellido = %s, telefono = %s, direccion = %s
         WHERE dni = %s
         """
-        self._execute_query(update_customers, (customer.name, customer.lastname, customer.phone, 
-                                         customer.address, customer.active, customer._dni))
+        self._execute_query(update_customers, (name, lastname, phone, 
+                                         address, dni))
 
     def get_customer(self, dni: str):
         select_customer = """
