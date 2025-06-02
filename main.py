@@ -75,11 +75,13 @@ def choice_customer(option):
                 dni = input("Ingresa el dni del cliente que quieras dar de alta: ")
                 Customer._validate_format_dni(dni)
                 mysql_customer.release(dni)
+                break
         case 3:
             while True:
                 dni = input("Ingresa el dni del cliente que quieras dar de baja: ")
                 Customer._validate_format_dni(dni)
                 mysql_customer.deregister(dni)
+                break
         case 4:
             pass
 

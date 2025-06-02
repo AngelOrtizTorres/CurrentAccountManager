@@ -5,8 +5,8 @@ from mysql.connector import Error
 @dataclass
 class Database:
     host: str = "localhost"
-    user: str = "angel"
-    password: str = "angel"  
+    user: str = "root"
+    password: str = "Root1234"  
     database: str = "bank_account_manager"
 
 # Configuración de la base de datos
