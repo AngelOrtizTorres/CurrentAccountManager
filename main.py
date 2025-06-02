@@ -11,7 +11,7 @@ import os
 main_menu = Menu("Gestionar Clientes", "Gestionar Cuentas Corrientes", "Operaciones en una Cuenta Corriente", "Salir", 
                  title = "Gestión de Cuentas Bancarias")
 
-customer_menu = Menu("Añadir cliente", "Dar de alta un cliente", "Dar de baja un cliente", "Modificar datos de cliente",
+customer_menu = Menu("Añadir cliente", "Reactivar un cliente", "Dar de baja un cliente", "Modificar datos de cliente",
                      "Volver al menú principal", title = "Gestión de Clientes")
 
 account_menu = Menu("Crear cuenta corriente", "Cerrar cuenta", "Ver ingresos", "Ver salidas", "Ver transferencias", 
@@ -72,7 +72,7 @@ def choice_customer(option):
             
         case 2:
             while True:
-                dni = input("Ingresa el dni del cliente que quieras dar de alta: ")
+                dni = input("Ingresa el dni del cliente que quieras reactivar: ")
                 Customer._validate_format_dni(dni)
                 mysql_customer.release(dni)
                 break
@@ -83,7 +83,31 @@ def choice_customer(option):
                 mysql_customer.deregister(dni)
                 break
         case 4:
-            pass
+            while True:
+                try:
+                    dni = input("Añade el DNI del cliente que quieras modificar: ")
+                    Customer._validate_format_dni(dni)
+                    break
+                except LetterErrorDNI as e:
+                    print(f"Error: {e}")
+                except FormatErrorDNI as e:
+                    print(f"Error: {e}")
+
+            name = input("Añade el nuevo nombre: ")
+            lastname = input("Añade el nuevo apellido: ")
+
+            while True:
+                try:
+                    phone = input("Añade el nuevo número de teléfono: ")
+                    Customer._validate_phone(phone)
+                    break
+                except ValidationException as e:
+                    print(f"Error: {e}")
+
+            address = input("Añade la nueva dirección: ")
+
+            mysql_customer.update_customer(name, lastname, phone, address, dni)
+                
 
 def choice_account(option):
     pass
