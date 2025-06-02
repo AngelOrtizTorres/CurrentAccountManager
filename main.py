@@ -1,5 +1,5 @@
 import mysql.connector
-from utils.customer_exception import *
+from exceptions.customer_exception import *
 from customers.customerDao import CustomerDAO
 from customers.customer_mysql import MySQLCustomerDAO
 from customers.customer import Customer
