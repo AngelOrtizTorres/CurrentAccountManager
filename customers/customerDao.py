@@ -8,10 +8,6 @@ class CustomerDAO(ABC):
         pass
 
     @abstractmethod
-    def remove_customer(self, dni):
-        pass
-
-    @abstractmethod
     def update_customer(self, customer):
         pass
 

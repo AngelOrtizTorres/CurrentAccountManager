@@ -45,12 +45,6 @@ class MySQLCustomerDAO(CustomerDAO):
         self._execute_query(insert_customer, (customer._dni, customer.name, customer.lastname, customer.phone, 
                                          customer.address, customer.active))
 
-    def remove_customer(self, dni: str):
-        delete_customer = """
-        DELETE FROM customer WHERE dni = %s
-        """
-        self._execute_query(delete_customer, (dni,))
-
     def update_customer(self, customer: Customer):
         update_customers = """
         UPDATE customer SET nombre = %s, apellido = %s, telefono = %s, direccion = %s, activo = %s
