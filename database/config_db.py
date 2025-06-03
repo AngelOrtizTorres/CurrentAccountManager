@@ -1,25 +1,18 @@
 from dataclasses import dataclass
 import mysql.connector
 from mysql.connector import Error
-
-@dataclass
-class Database:
-    host: str = "localhost"
-    user: str = "root"
-    password: str = "Root1234"  
-    database: str = "bank_account_manager"
-
-# Configuración de la base de datos
-database = Database()
+from dotenv import load_dotenv
+import os
 
 def connect():
     """Establece la conexión a la base de datos"""
     try:
+        load_dotenv()
         connection = mysql.connector.connect(
-            host=database.host,
-            user=database.user,
-            password=database.password,
-            database=database.database
+            host=os.getenv("HOST"),
+            user=os.getenv("USER"),
+            password=os.getenv("PASSWORD"),
+            database=os.getenv("DATABASE")
         )
         if connection.is_connected():
             print("Conexión exitosa a la base de datos")
@@ -32,17 +25,17 @@ def create_database_if_not_exists():
     try:
         # Primero nos conectamos sin especificar la base de datos
         temporal_connect = mysql.connector.connect(
-            host=database.host,
-            user=database.user,
-            password=database.password
+            host=os.getenv("HOST"),
+            user=os.getenv("USER"),
+            password=os.getenv("PASSWORD")
         )
         cursor = temporal_connect.cursor()
         
         # Creamos la base de datos si no existe
-        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database.database}")
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {os.getenv("DATABASE")}")
         temporal_connect.commit()
         cursor.close()
         temporal_connect.close()
-        print(f"Base de datos '{database.database}' verificada/creada correctamente")
+        print(f"Base de datos '{os.getenv("DATABASE")}' verificada/creada correctamente")
     except Error as e:
         print(f"Error al crear la base de datos: {e}")
