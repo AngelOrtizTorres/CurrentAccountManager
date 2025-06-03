@@ -14,6 +14,7 @@ class MySQLCustomerDAO(CustomerDAO):
         self._create_table()
 
     def _execute_query(self, query: str, parameters: tuple = ()):
+        cursor = None
         try:
             cursor = self.connection.cursor()
             cursor.execute(query, parameters)
