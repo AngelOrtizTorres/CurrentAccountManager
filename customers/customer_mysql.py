@@ -54,10 +54,16 @@ class MySQLCustomerDAO(CustomerDAO):
                                          address, dni))
 
     def get_customer(self, dni: str):
-        select_customer = """
-        SELECT * FROM customer WHERE dni = %s
-        """
-        self._execute_query(select_customer, (dni,))
+        select_customer = "SELECT * FROM customer WHERE dni = %s"
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(select_customer, (dni,))
+            result = cursor.fetchone()  
+            if result:
+                return Customer(result[0], result[1], result[2], result[3], result[4])
+            return None
+        finally:
+            cursor.close()
 
     def release(self, dni: str):
         release_customer = """
