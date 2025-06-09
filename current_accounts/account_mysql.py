@@ -53,6 +53,13 @@ class MySQLAccountDAO(AccountDAO):
         """
         self._execute_query(create_table_customer)
 
+    def create_account(self, account: Account):
+        insert_query = """
+        INSERT INTO current_account (numero_cuenta, dni, saldo, activa)
+        VALUES (%s, %s, %s, %s)
+        """
+        self._execute_query(insert_query, (account._account_number, account._dni, account._balance, account.state))
+
     def open_account(self, account_number: int):
         active_account = """
         UPDATE current_account SET activa = True WHERE numero_cuenta = %s
