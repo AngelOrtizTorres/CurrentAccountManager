@@ -1,10 +1,12 @@
 import mysql.connector
 from exceptions.customer_exception import *
+from exceptions.account_exception import *
 from customers.customerDao import CustomerDAO
 from customers.customer_mysql import MySQLCustomerDAO
 from customers.customer import Customer
-"""from current_accounts.account_dao import AccountDAO
-from current_accounts.accounts import CurrentAccount"""
+from current_accounts.accountDao import AccountDAO
+from current_accounts.account import Account
+from current_accounts.account_mysql import MySQLAccountDAO
 from menu import Menu
 import os
 
@@ -45,7 +47,6 @@ def choice_customer(option):
     match option:
         case 1:
             ask_customer_data(mysql_customer)
-            
         case 2:
             ask_customer_release(mysql_customer)
         case 3:
@@ -53,14 +54,99 @@ def choice_customer(option):
         case 4:
             update_customer_data(mysql_customer)
         case 5:
-            return
-                
+            return        
 
 def choice_account(option):
-    pass
+    mysql_account = MySQLAccountDAO()
+    
+    match option:
+        case 1:
+            create_current_account(mysql_account)
+        case 2:
+            close_current_account(mysql_account)
+        # placeholders para futuras funciones:
+        case 3:
+            print("Función 'Ver ingresos' aún no implementada.")
+        case 4:
+            print("Función 'Ver salidas' aún no implementada.")
+        case 5:
+            print("Función 'Ver transferencias' aún no implementada.")
+        case 6:
+            return
 
 def choice_movements(option):
-    pass
+    mysql_account = MySQLAccountDAO()
+
+    match option:
+        case 1:
+            consult_balance(mysql_account)
+        case 2:
+            print("Función 'Ver movimientos entre fechas' aún no implementada.")
+        case 3:
+            deposit_money(mysql_account)
+        case 4:
+            withdraw_money(mysql_account)
+        case 5:
+            transfer_money(mysql_account)
+        case 6:
+            return
+
+def create_current_account(mysql_account):
+    try:
+        dni = input("Introduce el DNI del cliente: ")
+        balance = float(input("Introduce el saldo inicial: "))
+
+        new_account = Account(dni, balance)
+        mysql_account.create_account(new_account)
+        print(f"Cuenta creada correctamente con número: {new_account._account_number}")
+    except Exception as e:
+        print(f"Error al crear la cuenta: {e}")
+
+def close_current_account(mysql_account):
+    try:
+        account_number = int(input("Introduce el número de cuenta a cerrar: "))
+        mysql_account.close_account(account_number)
+        print("Cuenta cerrada correctamente.")
+    except AccountNotFoundError:
+        print("No se encontró la cuenta que intentas cerrar.")
+    except Exception as e:
+        print(f"Error al cerrar la cuenta: {e}")
+
+def consult_balance(mysql_account):
+    try:
+        account_number = int(input("Introduce el número de cuenta: "))
+        balance = mysql_account.get_balance(account_number)
+        print(f"Saldo actual: {balance:.2f} €")
+    except Exception as e:
+        print(f"Error al consultar el saldo: {e}")
+
+def deposit_money(mysql_account):
+    try:
+        account_number = int(input("Introduce el número de cuenta: "))
+        amount = float(input("Introduce la cantidad a ingresar: "))
+        mysql_account.deposit(account_number, amount)
+        print("Ingreso realizado correctamente.")
+    except Exception as e:
+        print(f"Error al ingresar dinero: {e}")
+
+def withdraw_money(mysql_account):
+    try:
+        account_number = int(input("Introduce el número de cuenta: "))
+        amount = float(input("Introduce la cantidad a retirar: "))
+        mysql_account.withdraw(account_number, amount)
+        print("Retiro realizado correctamente.")
+    except Exception as e:
+        print(f"Error al retirar dinero: {e}")
+
+def transfer_money(mysql_account):
+    try:
+        source_account = int(input("Introduce el número de cuenta origen: "))
+        target_account = int(input("Introduce el número de cuenta destino: "))
+        amount = float(input("Introduce la cantidad a transferir: "))
+        mysql_account.transfer_to(source_account, target_account, amount)
+        print("Transferencia realizada correctamente.")
+    except Exception as e:
+        print(f"Error al realizar la transferencia: {e}")
 
 def ask_customer_data(mysql_customer):
     while True:
