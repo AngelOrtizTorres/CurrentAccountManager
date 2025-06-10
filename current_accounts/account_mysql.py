@@ -30,7 +30,6 @@ class MySQLAccountDAO(AccountDAO):
         cursor = None
         try:
             cursor = self.connection.cursor()
-            self.connection.start_transaction()
             for query, params in queries_with_params:
                 cursor.execute(query, params)
             self.connection.commit()
