@@ -18,10 +18,11 @@ def connect():
             return connection
     except Error as e:
         print(f"Error al conectar a MySQL: {e}")
+        raise
 
 def create_database_if_not_exists():
     try:
-        # Primero nos conectamos sin especificar la base de datos
+        load_dotenv()
         temporal_connect = mysql.connector.connect(
             host=os.getenv("HOST"),
             user=os.getenv("USER"),
