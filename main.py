@@ -1,11 +1,4 @@
-import mysql.connector
-from exceptions.customer_exception import *
-from exceptions.account_exception import *
-from customers.customerDao import CustomerDAO
 from customers.customer_mysql import MySQLCustomerDAO
-from customers.customer import Customer
-from current_accounts.accountDao import AccountDAO
-from current_accounts.account import Account
 from current_accounts.account_mysql import MySQLAccountDAO
 from operations.customer_operations import *
 from operations.account_operations import *
@@ -15,11 +8,11 @@ import os
 main_menu = Menu("Gestionar Clientes", "Gestionar Cuentas Corrientes", "Operaciones en una Cuenta Corriente", "Salir", 
                  title = "Gestión de Cuentas Bancarias")
 
-customer_menu = Menu("Añadir cliente", "Reactivar un cliente", "Dar de baja un cliente", "Modificar datos de cliente",
-                     "Volver al menú principal", title = "Gestión de Clientes")
+customer_menu = Menu("Añadir cliente", "Reactivar un cliente", "Dar de baja un cliente", "Modificar datos de cliente", 
+                     "Ver todos los clientes", "Volver al menú principal", title = "Gestión de Clientes")
 
 account_menu = Menu("Crear cuenta corriente", "Cerrar cuenta", "Ver ingresos", "Ver salidas", "Ver transferencias", 
-                    "Volver al menú principal", title = "Gestión de Cuentas Corrientes")
+                    "Ver todas las cuentas corrientes", "Volver al menú principal", title = "Gestión de Cuentas Corrientes")
 
 movements_menu = Menu("Consultar saldo", "Ver movimientos entre fechas", "Ingresar dinero", "Retirar dinero", 
                       "Hacer transferencia", "Volver al menú principal", title = "Gestión de movimientos")
@@ -43,17 +36,21 @@ def main():
             
 def choice_customer(option):
     mysql_customer = MySQLCustomerDAO()
+    mysql_account = MySQLAccountDAO()
+    
     match option:
         case 1:
             ask_customer_data(mysql_customer)
         case 2:
             ask_customer_release(mysql_customer)
         case 3:
-            ask_customer_deregister(mysql_customer)
+            ask_customer_deregister(mysql_customer, mysql_account)
         case 4:
             update_customer_data(mysql_customer)
         case 5:
-            return        
+            show_customers(mysql_customer)
+        case 6:
+            return       
 
 def choice_account(option):
     mysql_account = MySQLAccountDAO()
@@ -63,7 +60,6 @@ def choice_account(option):
             create_current_account(mysql_account)
         case 2:
             close_current_account(mysql_account)
-        # placeholders para futuras funciones:
         case 3:
             print("Función 'Ver ingresos' aún no implementada.")
         case 4:
@@ -71,6 +67,8 @@ def choice_account(option):
         case 5:
             print("Función 'Ver transferencias' aún no implementada.")
         case 6:
+            show_all_accounts(mysql_account)
+        case 7:
             return
 
 def choice_movements(option):
