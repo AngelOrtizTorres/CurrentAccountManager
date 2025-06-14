@@ -143,6 +143,21 @@ class MySQLAccountDAO(AccountDAO):
             return result[0] > 0
         finally:
             cursor.close()
+    
+    def get_dni_by_account(self, account_number: int):
+        get_dni_query = "SELECT dni FROM current_account WHERE numero_cuenta = %s"
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(get_dni_query, (account_number,))
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+            return None
+        except Exception as e:
+            print(f"Error al obtener DNI por cuenta: {e}")
+            return None
+        finally:
+            cursor.close()
 
     def close_connection(self):
            if self.connection and self.connection.is_connected():
