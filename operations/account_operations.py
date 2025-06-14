@@ -79,6 +79,7 @@ def deposit_money(mysql_account):
             break
         except AccountInactiveError as e:
             print(f"Error: {e}")
+            return
         except Exception as e:
             print(f"Error: {e}")
 
@@ -96,6 +97,7 @@ def withdraw_money(mysql_account):
             break
         except AccountInactiveError as e:
             print(f"Error: {e}")
+            return
         except Exception as e:
             print(f"Error: {e}")
 
