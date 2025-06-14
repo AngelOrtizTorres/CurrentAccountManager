@@ -11,8 +11,9 @@ main_menu = Menu("Gestionar Clientes", "Gestionar Cuentas Corrientes", "Operacio
 customer_menu = Menu("Añadir cliente", "Reactivar un cliente", "Dar de baja un cliente", "Modificar datos de cliente", 
                      "Ver todos los clientes", "Volver al menú principal", title = "Gestión de Clientes")
 
-account_menu = Menu("Crear cuenta corriente", "Cerrar cuenta", "Ver ingresos", "Ver salidas", "Ver transferencias", 
-                    "Ver todas las cuentas corrientes", "Volver al menú principal", title = "Gestión de Cuentas Corrientes")
+account_menu = Menu("Crear cuenta corriente", "Reabrir cuenta corriente", "Cerrar cuenta corriente", "Ver ingresos", "Ver salidas", 
+                    "Ver transferencias", "Ver todas las cuentas corrientes", "Volver al menú principal", 
+                    title = "Gestión de Cuentas Corrientes")
 
 movements_menu = Menu("Consultar saldo", "Ver movimientos entre fechas", "Ingresar dinero", "Retirar dinero", 
                       "Hacer transferencia", "Volver al menú principal", title = "Gestión de movimientos")
@@ -59,18 +60,20 @@ def choice_account(option):
         case 1:
             create_current_account(mysql_account)
         case 2:
-            close_current_account(mysql_account)
+            open_current_account(mysql_account)
         case 3:
-            print("Función 'Ver ingresos' aún no implementada.")
+            close_current_account(mysql_account)
         case 4:
-            print("Función 'Ver salidas' aún no implementada.")
+            print("Función 'Ver ingresos' aún no implementada.")
         case 5:
-            print("Función 'Ver transferencias' aún no implementada.")
+            print("Función 'Ver salidas' aún no implementada.")
         case 6:
-            show_all_accounts(mysql_account)
+            print("Función 'Ver transferencias' aún no implementada.")
         case 7:
+            show_all_accounts(mysql_account)
+        case 8:
             return
-
+        
 def choice_movements(option):
     mysql_account = MySQLAccountDAO()
 
