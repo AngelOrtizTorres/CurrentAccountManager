@@ -104,7 +104,7 @@ def show_customers(mysql_customer):
 
         print("================================ LISTADO DE CLIENTES ================================")
         print("-------------------------------------------------------------------------------------")
-        print(" DNI       | Nombre                 | Teléfono  | Dirección                | Estado  ")
+        print(" DNI       | Nombre               | Teléfono  | Dirección                | Estado  ")
         print("-------------------------------------------------------------------------------------")
 
         for customer in customers:
