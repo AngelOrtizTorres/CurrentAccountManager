@@ -54,13 +54,14 @@ def choice_customer(option):
             return       
 
 def choice_account(option):
+    mysql_customer = MySQLCustomerDAO()
     mysql_account = MySQLAccountDAO()
     
     match option:
         case 1:
             create_current_account(mysql_account)
         case 2:
-            open_current_account(mysql_account)
+            open_current_account(mysql_account, mysql_customer)
         case 3:
             close_current_account(mysql_account)
         case 4:
