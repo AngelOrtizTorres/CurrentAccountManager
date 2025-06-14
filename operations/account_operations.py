@@ -22,6 +22,16 @@ def create_current_account(mysql_account):
     except NegativeAmountError as e:
         print(f"Error: {e}")
 
+def open_current_account(mysql_account):
+    while True:
+        try:
+            number_account = int(input("Escribe el número de la cuenta que quieras reabrir: "))
+            break
+        except Exception as e:
+            print(f"Error: {e}")
+    
+    mysql_account.open_account(number_account)
+
 def close_current_account(mysql_account):
     while True:
         try:
@@ -90,7 +100,7 @@ def transfer_money(mysql_account):
 
             balance = float(input("¿Qué cantidad quieres transferir? "))
             break
-        
+
         except AccountSourceInactiveError as e:
             print(f"Error: {e}")
             return
@@ -113,14 +123,16 @@ def show_all_accounts(mysql_account):
         """)
         accounts = cursor.fetchall()
         
-        print("\n=== LISTADO DE CUENTAS ===")
-        print("Nº Cuenta | DNI       | Nombre            | Saldo    | Estado")
-        print("-" * 65)
+        print("\n================= LISTADO DE CUENTAS CORRIENTES ==================")
+        print("--------------------------------------------------------------------")
+        print(" Nº Cuenta  | DNI       | Nombre               | Saldo     | Estado")
+        print("--------------------------------------------------------------------")
         
         for account in accounts:
             number, dni, name, lastname, balance, active = account
             status = "Activa" if active else "Inactiva"
-            print(f"{number:<9} | {dni:<9} | {name} {lastname:<15} | {balance:>8.2f}€ | {status}")
+            full_name = f"{name} {lastname}"
+            print(f" {number:010} | {dni:<9} | {full_name:<20} | {balance:>8.2f}€ | {status:<8}")
         print()
             
     except Exception as e:
