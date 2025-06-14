@@ -16,3 +16,7 @@ class InsufficientBalanceError(ValidationException):
 class AccountNotFoundError(ValidationException):
     def __init__(self):
         super().__init__("La cuenta corriente que buscas, no se pudo encontrar")
+        
+class AccountInactiveError(ValidationException):
+    def __init__(self, *args):
+        super().__init__("La cuenta se encuentra inactiva en este momento")
