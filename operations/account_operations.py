@@ -1,4 +1,5 @@
 from exceptions.account_exception import *
+from exceptions.customer_exception import *
 from current_accounts.account import Account
 from current_accounts.account_mysql import MySQLAccountDAO
 
@@ -22,15 +23,29 @@ def create_current_account(mysql_account):
     except NegativeAmountError as e:
         print(f"Error: {e}")
 
-def open_current_account(mysql_account):
+def open_current_account(mysql_account, mysql_customer):
     while True:
         try:
             number_account = int(input("Escribe el número de la cuenta que quieras reabrir: "))
+            dni = mysql_account.get_dni_by_account(number_account)
+            
+            if not dni:
+                raise DNINotFoundError()
+            
+            if not mysql_customer.is_customer_active(dni):
+                raise CustomerInactiveError()
+            
+            mysql_account.open_account(number_account)
+            print("Cuenta reabierta correctamente.")
             break
+        except DNINotFoundError as e:
+            print(f"Error: {e}")
+            return
+        except CustomerInactiveError as e:
+            print(f"Error: {e}")
+            return
         except Exception as e:
             print(f"Error: {e}")
-    
-    mysql_account.open_account(number_account)
 
 def close_current_account(mysql_account):
     while True:
