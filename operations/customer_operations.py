@@ -46,6 +46,9 @@ def ask_customer_deregister(mysql_customer, mysql_account):
         if mysql_account.has_active_accounts(dni):
             print("No se puede dar de baja al cliente porque tiene cuentas corrientes activas.")
             return
+        
+        mysql_customer.deregister(dni)
+        break
 
 def update_customer_data(mysql_customer):
     while True:
