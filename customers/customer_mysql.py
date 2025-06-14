@@ -78,6 +78,21 @@ class MySQLCustomerDAO(CustomerDAO):
         """
         self._execute_query(deregister_customer, (dni,))
 
+    def is_customer_active(self, dni: str):
+        customer_query = "SELECT activo FROM customer WHERE dni = %s"
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(customer_query, (dni,))
+            result = cursor.fetchone()
+            if result is None:
+                raise Exception(f"No se encontró cliente con DNI {dni}")
+            return bool(result[0])
+        except Exception as e:
+            print(f"Error al verificar estado del cliente: {e}")
+            raise
+        finally:
+            cursor.close()
+
     def close_connection(self):
            if self.connection and self.connection.is_connected():
                self.connection.close()
