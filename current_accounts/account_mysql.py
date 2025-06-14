@@ -46,13 +46,17 @@ class MySQLAccountDAO(AccountDAO):
         CREATE TABLE IF NOT EXISTS current_account(
         numero_cuenta int PRIMARY KEY,
         dni VARCHAR(9),
-        saldo DECIMAL(18, 2), 
+        saldo DECIMAL(18, 2) CHECK (saldo >= 0), 
         activa BOOL
         )
         """
         self._execute_query(create_table_customer)
 
     def create_account(self, account: Account):
+
+        if account._balance < 0:
+            raise NegativeAmountError()
+    
         insert_query = """
         INSERT INTO current_account (numero_cuenta, dni, saldo, activa)
         VALUES (%s, %s, %s, %s)
@@ -129,6 +133,16 @@ class MySQLAccountDAO(AccountDAO):
             ("UPDATE current_account SET saldo = saldo + %s WHERE numero_cuenta = %s", (amount, target_account)),
         ]
         self._execute_transaction(transactions)
+
+    def has_active_accounts(self, dni: str):
+        count_query = "SELECT COUNT(*) FROM current_account WHERE dni = %s AND activa = TRUE"
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(count_query, (dni,))
+            result = cursor.fetchone()
+            return result[0] > 0
+        finally:
+            cursor.close()
 
     def close_connection(self):
            if self.connection and self.connection.is_connected():
