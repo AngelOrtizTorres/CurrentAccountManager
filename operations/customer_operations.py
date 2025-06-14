@@ -1,5 +1,6 @@
 from exceptions.customer_exception import *
 from customers.customer import Customer
+from current_accounts.account_mysql import MySQLAccountDAO
 
 def ask_customer_data(mysql_customer):
     while True:
@@ -33,12 +34,18 @@ def ask_customer_release(mysql_customer):
         mysql_customer.release(dni)
         break
 
-def ask_customer_deregister(mysql_customer):
+def ask_customer_deregister(mysql_customer, mysql_account):
     while True:
         dni = input("Ingresa el dni del cliente que quieras dar de baja: ")
-        Customer._validate_format_dni(dni)
-        mysql_customer.deregister(dni)
-        break
+        try:
+            Customer._validate_format_dni(dni)
+        except (LetterErrorDNI, FormatErrorDNI) as e:
+            print(f"Error: {e}")
+            continue
+
+        if mysql_account.has_active_accounts(dni):
+            print("No se puede dar de baja al cliente porque tiene cuentas corrientes activas.")
+            return
 
 def update_customer_data(mysql_customer):
     while True:
@@ -81,3 +88,30 @@ def get_updated_phone(current_phone):
             return current_phone
         except ValidationException as e:
             print(f"Error: {e}")
+
+def show_customers(mysql_customer):
+    cursor = mysql_customer.connection.cursor()
+    try:
+        cursor.execute("""
+            SELECT dni, nombre, apellido, telefono, direccion, activo
+            FROM customer
+            ORDER BY nombre, apellido
+        """)
+        customers = cursor.fetchall()
+
+        print("================================ LISTADO DE CLIENTES ================================")
+        print("-------------------------------------------------------------------------------------")
+        print(" DNI       | Nombre                 | Teléfono  | Dirección                | Estado  ")
+        print("-------------------------------------------------------------------------------------")
+
+        for customer in customers:
+            dni, name, lastname, phone, address, active = customer
+            status = "Activa" if active else "Inactiva"
+            full_name = f"{name} {lastname}"
+            print(f" {dni:<9} | {full_name:<20} | {phone:<9} | {address:<24} | {status:<7}")
+        print()
+    
+    except Exception as e:
+        print(f"Error al consultar los clientes: {e}")
+    finally:
+        cursor.close()
