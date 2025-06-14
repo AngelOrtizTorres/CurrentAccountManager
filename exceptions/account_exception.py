@@ -20,3 +20,11 @@ class AccountNotFoundError(ValidationException):
 class AccountInactiveError(ValidationException):
     def __init__(self, *args):
         super().__init__("La cuenta se encuentra inactiva en este momento")
+
+class AccountSourceInactiveError(ValidationException):
+    def __init__(self, *args):
+        super().__init__("La cuenta origen se encuentra inactiva en este momento")
+
+class AccountTargetInactiveError(ValidationException):
+    def __init__(self, *args):
+        super().__init__("La cuenta destino se encuentra inactiva en este momento")
