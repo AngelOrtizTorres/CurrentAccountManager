@@ -1,4 +1,4 @@
-
+from datetime import datetime
 
 def get_all_deposit(mysql_movements):
     while True:
@@ -79,7 +79,7 @@ def get_all_transfer(mysql_movements):
         
         print(f"\nTransferencias de la cuenta {number_account:010}")
         print("-------------------------------------------------------------------------------------------------------")
-        print(" ID  | Importe   | Fecha y Hora        | Tipo                 | Cuenta Transferencia | Concepto")
+        print(" ID  | Importe   | Fecha y Hora        | Tipo                   | Cuenta Transferencia | Concepto")
         print("-------------------------------------------------------------------------------------------------------")
 
         for transfer in transfers:
