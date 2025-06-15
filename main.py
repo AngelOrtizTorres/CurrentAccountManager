@@ -1,7 +1,9 @@
 from customers.customer_mysql import MySQLCustomerDAO
 from current_accounts.account_mysql import MySQLAccountDAO
+from movements.movements_mysql import MySQLMovementsDAO
 from operations.customer_operations import *
 from operations.account_operations import *
+from operations.movements_operations import *
 from menu import Menu
 import os
 
@@ -56,6 +58,7 @@ def choice_customer(option):
 def choice_account(option):
     mysql_customer = MySQLCustomerDAO()
     mysql_account = MySQLAccountDAO()
+    mysql_movements = MySQLMovementsDAO()
     
     match option:
         case 1:
@@ -65,11 +68,11 @@ def choice_account(option):
         case 3:
             close_current_account(mysql_account)
         case 4:
-            print("Función 'Ver ingresos' aún no implementada.")
+            get_all_deposit(mysql_movements)
         case 5:
-            print("Función 'Ver salidas' aún no implementada.")
+            get_all_withdraw(mysql_movements)
         case 6:
-            print("Función 'Ver transferencias' aún no implementada.")
+            get_all_transfer(mysql_movements)
         case 7:
             show_all_accounts(mysql_account)
         case 8:
@@ -77,12 +80,13 @@ def choice_account(option):
         
 def choice_movements(option):
     mysql_account = MySQLAccountDAO()
+    mysql_movements = MySQLMovementsDAO()
 
     match option:
         case 1:
             consult_balance(mysql_account)
         case 2:
-            print("Función 'Ver movimientos entre fechas' aún no implementada.")
+            get_movements_betweeen_date(mysql_movements)
         case 3:
             deposit_money(mysql_account)
         case 4:
