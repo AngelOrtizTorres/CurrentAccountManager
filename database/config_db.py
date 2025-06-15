@@ -14,7 +14,6 @@ def connect():
             database=os.getenv("DATABASE")
         )
         if connection.is_connected():
-            print("\nConexión exitosa a la base de datos\n")
             return connection
     except Error as e:
         print(f"Error al conectar a MySQL: {e}")
