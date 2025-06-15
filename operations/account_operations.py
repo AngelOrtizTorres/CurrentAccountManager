@@ -66,7 +66,8 @@ def consult_balance(mysql_account):
         except Exception as e:
             print(f"Error: {e}")
     
-    mysql_account.get_balance(number_account)
+    balance = mysql_account.get_balance(number_account)
+    print(f"El saldo de la cuenta {number_account:010} es: {balance} €")
 
 def deposit_money(mysql_account):
     while True:
