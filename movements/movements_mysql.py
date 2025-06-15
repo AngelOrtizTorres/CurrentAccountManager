@@ -45,15 +45,3 @@ class MySQLMovementsDAO(MovementsDAO):
         """
         self._execute_query(add_movement, (movement._number_account, movement._amount, movement._timestamp, 
                                            movement._movement_type, movement._transfer_account, movement._description))
-        
-    def get_deposit(self):
-        pass
-
-    def get_withdraw(self):
-        pass
-
-    def get_transfer(self):
-        pass
-
-    def get_movements_between_date(self):
-        pass
