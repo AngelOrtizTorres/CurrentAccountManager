@@ -1,7 +1,8 @@
 from exceptions.account_exception import *
 from exceptions.customer_exception import *
 from current_accounts.account import Account
-from current_accounts.account_mysql import MySQLAccountDAO
+from movements.movements_mysql import MySQLMovementsDAO
+from movements.movements import Movements
 
 def create_current_account(mysql_account):
     dni = input("Añade el DNI del cliente al que quieras crear una cuenta: ")
@@ -76,6 +77,7 @@ def deposit_money(mysql_account):
                 raise AccountInactiveError()
 
             balance = float(input("¿Qué cantidad quieres depositar? "))
+            description = input("Escribe el concepto del deposito (Pulsa ENTER si no quieres añadir concepto): ")
             break
         except AccountInactiveError as e:
             print(f"Error: {e}")
@@ -83,7 +85,10 @@ def deposit_money(mysql_account):
         except Exception as e:
             print(f"Error: {e}")
 
+    deposit = Movements(number_account, balance, "ingreso", None, description)
     mysql_account.deposit(number_account, balance)
+    movement = MySQLMovementsDAO()
+    movement.create_movement(deposit)
 
 def withdraw_money(mysql_account):
     while True:
@@ -94,6 +99,7 @@ def withdraw_money(mysql_account):
                 raise AccountInactiveError()
 
             balance = float(input("¿Qué cantidad quieres retirar? "))
+            description = input("Escribe el concepto de la salida (Pulsa ENTER si no quieres añadir concepto): ")
             break
         except AccountInactiveError as e:
             print(f"Error: {e}")
@@ -101,7 +107,10 @@ def withdraw_money(mysql_account):
         except Exception as e:
             print(f"Error: {e}")
 
+    withdraw = Movements(number_account, balance, "salida", None, description)
     mysql_account.withdraw(number_account, balance)
+    movement = MySQLMovementsDAO()
+    movement.create_movement(withdraw)
 
 def transfer_money(mysql_account):
     while True:
@@ -116,6 +125,7 @@ def transfer_money(mysql_account):
                 raise AccountTargetInactiveError()
 
             balance = float(input("¿Qué cantidad quieres transferir? "))
+            description = input("Escribe el concepto de la transferencia (Pulsa ENTER si no quieres añadir concepto): ")
             break
 
         except AccountSourceInactiveError as e:
@@ -127,7 +137,12 @@ def transfer_money(mysql_account):
         except Exception as e:
             print(f"Error: {e}")
 
+    source_transfer = Movements(source_account, balance, "transferencia enviada", target_account, description)
+    target_transfer = Movements(target_account, balance, "transferencia recibida", source_account, description)
     mysql_account.transfer_to(source_account, target_account, balance)
+    movement = MySQLMovementsDAO()
+    movement.create_movement(source_transfer)
+    movement.create_movement(target_transfer)
 
 def show_all_accounts(mysql_account):
     cursor = mysql_account.connection.cursor()
