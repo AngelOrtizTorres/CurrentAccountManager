@@ -123,14 +123,14 @@ def get_movements_betweeen_date(mysql_movements):
 
     cursor = mysql_movements.connection.cursor()
     try:
-        query = """
+        movements_query = """
             SELECT id, importe, fecha_hora, tipo, cuenta_transferencia, concepto
             FROM movements
             WHERE numero_cuenta = %s AND fecha_hora BETWEEN %s AND %s
             ORDER BY fecha_hora DESC
         """
         params = (number_account, start_date_str + " 00:00:00", end_date_str + " 23:59:59")
-        cursor.execute(query, params)
+        cursor.execute(movements_query, params)
         movements = cursor.fetchall()
 
         print(f"\nMovimientos de la cuenta {number_account:010} desde {start_date_str} hasta {end_date_str}")
