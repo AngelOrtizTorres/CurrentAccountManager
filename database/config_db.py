@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv

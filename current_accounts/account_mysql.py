@@ -87,7 +87,7 @@ class MySQLAccountDAO(AccountDAO):
                 raise AccountNotFoundError()
             return bool(result[0])
         except Error as e:
-            print(f"Error checking if account is active: {e}")
+            print(f"Error: {e}")
             raise
         finally:
             cursor.close()
