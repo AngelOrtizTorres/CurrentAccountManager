@@ -4,21 +4,8 @@ from movements.movements_mysql import MySQLMovementsDAO
 from operations.customer_operations import *
 from operations.account_operations import *
 from operations.movements_operations import *
-from menu import Menu
+from menu import Menu, main_menu, customer_menu, account_menu, movements_menu
 import os
-
-main_menu = Menu("Gestionar Clientes", "Gestionar Cuentas Corrientes", "Operaciones en una Cuenta Corriente", "Salir", 
-                 title = "Gestión de Cuentas Bancarias")
-
-customer_menu = Menu("Añadir cliente", "Reactivar un cliente", "Dar de baja un cliente", "Modificar datos de cliente", 
-                     "Ver todos los clientes", "Volver al menú principal", title = "Gestión de Clientes")
-
-account_menu = Menu("Crear cuenta corriente", "Reabrir cuenta corriente", "Cerrar cuenta corriente", "Ver ingresos", "Ver salidas", 
-                    "Ver transferencias", "Ver todas las cuentas corrientes", "Volver al menú principal", 
-                    title = "Gestión de Cuentas Corrientes")
-
-movements_menu = Menu("Consultar saldo", "Ver movimientos entre fechas", "Ingresar dinero", "Retirar dinero", 
-                      "Hacer transferencia", "Volver al menú principal", title = "Gestión de movimientos")
 
 def main():
     while True:
