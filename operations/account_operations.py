@@ -67,7 +67,7 @@ def consult_balance(mysql_account):
             print(f"Error: {e}")
     
     balance = mysql_account.get_balance(number_account)
-    print(f"El saldo de la cuenta {number_account:010} es: {balance} €")
+    print(f"El saldo de la cuenta {number_account:010} es: {balance} €\n")
 
 def deposit_money(mysql_account):
     while True:
