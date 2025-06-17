@@ -35,3 +35,7 @@ class Customer:
     def _validate_phone(phone: str):
         if len(phone) != 9 or phone[0] not in '679':
             raise FormatErrorPhone()
+
+    @property
+    def dni(self):
+        return self._dni
